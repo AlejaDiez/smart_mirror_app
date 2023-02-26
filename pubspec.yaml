@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_colorpicker: ^1.0.3
+  animations: ^2.0.7
 
 dev_dependencies:
   flutter_test:
@@ -17,3 +19,20 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/fonts/
+    - assets/images/
+
+  fonts:
+    - family: Gilroy
+      fonts:
+        - asset: assets/fonts/Gilroy_Light.otf
+          style: normal
+          weight: 400
+        - asset: assets/fonts/Gilroy_ExtraBold.otf
+          style: normal
+          weight: 700
+    - family: UIcons
+      fonts:
+        - asset: assets/fonts/UIcons.ttf
