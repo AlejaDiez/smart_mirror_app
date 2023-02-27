@@ -18,6 +18,9 @@ An app to control the Smart Mirror via bluetooth with [smart_mirror_mcu](https:/
 - 📋 Project start
 ### Version 0.1.0 (February 2023)
 - 🖌️ Smart Mirror design
+### Version 0.1.1 (February 2023)
+- 🖌️ Improve Smart Mirror design
+- 🧰 Smart Mirror model
 
 ## License
 

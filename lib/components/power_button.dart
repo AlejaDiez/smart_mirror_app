@@ -20,9 +20,9 @@ class _PowerButtonComponentState extends State<PowerButtonComponent> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: widget.onChanged,
-      onTapDown: (_) => setState(() => _expand = true),
-      onTapUp: (_) => setState(() => _expand = false),
-      onTapCancel: () => setState(() => _expand = false),
+      onPanDown: (_) => setState(() => _expand = true),
+      onPanEnd: (_) => setState(() => _expand = false),
+      onPanCancel: () => setState(() => _expand = false),
       child: AnimatedContainer(
         padding: const EdgeInsets.all(28.8),
         transform: Matrix4.identity()..scale(_expand ? 1.08 : 1.0),

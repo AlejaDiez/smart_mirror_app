@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_mirror_app/components/color_picker.dart';
+import 'package:smart_mirror_app/models/smart_mirror.dart';
 
 import '/components/power_button.dart';
 import '../components/brightness_slider.dart';
@@ -14,12 +15,14 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final String _version = "1.1.0";
   int _index = 0;
-  bool _state = false;
-  double _brightness = 1.0;
-  Color _color = Colors.white;
-  final List<Color> _colors = [Colors.white];
+  final SmartMirror _smartMirror = SmartMirror(
+    version: "1.0.0",
+    state: false,
+    brightness: 0.6,
+    color: "#FFFFFF",
+    colors: [const Color(0xFFFFFF), const Color(0xFF0000)]
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +34,7 @@ class _HomeViewState extends State<HomeView> {
             const Text("Smart Mirror"),
             Padding(
               padding: const EdgeInsets.only(left: 9.6, bottom: 5.0),
-              child: Text("v$_version", style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Theme.of(context).hintColor))
+              child: Text("v${_smartMirror.version}", style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Theme.of(context).hintColor))
             )
           ]
         ),
@@ -45,9 +48,9 @@ class _HomeViewState extends State<HomeView> {
                 TabButtonComponent(
                   expanded: _index == 0,
                   icon: const IconData(0xF21C, fontFamily: 'UIcons'),
-                  percentage: _brightness,
+                  percentage: _smartMirror.brightness,
                   color: const Color(0xFF53D8FB),
-                  data: (_brightness * 100).toInt().toString(),
+                  data: (_smartMirror.brightness * 100).toInt().toString(),
                   suffix: "%",
                   onPressed: () => setState(() => _index = 0)
                 ),
@@ -55,7 +58,7 @@ class _HomeViewState extends State<HomeView> {
                   expanded: _index == 1,
                   icon: const IconData(0xF51F, fontFamily: 'UIcons'),
                   percentage: 1.0,
-                  color: _color,
+                  color: _smartMirror.color,
                   onPressed: () => setState(() => _index = 1)
                 )
               ]
@@ -84,8 +87,8 @@ class _HomeViewState extends State<HomeView> {
             ),
             const Expanded(child: SizedBox()),
             PowerButtonComponent(
-              state: _state,
-              onChanged: () => setState(() => _state = !_state)
+              state: _smartMirror.state,
+              onChanged: () => setState(() => _smartMirror.toggle())
             ),
             const SizedBox(height: 16.0)
           ]
@@ -101,8 +104,8 @@ class _HomeViewState extends State<HomeView> {
       padding: const EdgeInsets.symmetric(horizontal: 32.0),
       child: Center(
         child: BrightnessSliderComponent(
-          value: _brightness,
-          onChanged: (double value) => setState(() => _brightness = value)
+          value: _smartMirror.brightness,
+          onChanged: (double value) => setState(() => _smartMirror.setBrightness(value))
         )
       )
     );
@@ -119,8 +122,8 @@ class _HomeViewState extends State<HomeView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ColorPickerComponent(
-            color: _color,
-            onChanged: (Color color) => setState(() => _color = color)
+            color: _smartMirror.color,
+            onChanged: (Color color) => setState(() => _smartMirror.setColor(color))
           ),
           const SizedBox(height: 64.0),
           ConstrainedBox(
@@ -131,24 +134,24 @@ class _HomeViewState extends State<HomeView> {
               crossAxisAlignment: WrapCrossAlignment.center,
               spacing: 16.0,
               runSpacing: 16.0,
-              children: List<Widget>.generate(_colors.length, (index) => GestureDetector(
-                onTap: () => setState(() => _color = _colors[index]),
-                onLongPress: () => setState(() => _colors.removeAt(index)),
+              children: List<Widget>.generate(_smartMirror.getSizeOfColors(), (index) => GestureDetector(
+                onTap: () => setState(() => _smartMirror.setColorFromList(index)),
+                onLongPress: () => setState(() => _smartMirror.removeColor(index)),
                 child: Container(
                   width: 48.0,
                   height: 48.0,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: _colors[index]
+                    color: _smartMirror.getColor(index)
                   )
                 )
               )) + (
-                _colors.length < 8
+                _smartMirror.getSizeOfColors() < 8
                   ? [
                     GestureDetector(
-                      onTap: () => setState(() => _colors.add(_color)),
-                      onLongPress: _colors.isEmpty
-                        ? () => setState(() => _colors.add(Colors.white))
+                      onTap: () => setState(() => _smartMirror.addCurrentColor()),
+                      onLongPress: _smartMirror.getSizeOfColors() == 0
+                        ? () => setState(() => _smartMirror.addColor(Colors.white))
                         : null,
                       child: Container(
                         width: 48.0,
@@ -157,7 +160,7 @@ class _HomeViewState extends State<HomeView> {
                           shape: BoxShape.circle,
                           border: Border.all(
                             color: Theme.of(context).hintColor,
-                            width: 2.0
+                            width: 1.8
                           )
                         ),
                         child: Icon(

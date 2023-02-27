@@ -20,17 +20,15 @@ class _BrightnessSliderComponentState extends State<BrightnessSliderComponent> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onVerticalDragStart: (_) {
-        _position = MediaQuery.of(context).size.height * 0.4 * widget.value;
-        setState(() => _expand = true);
-      },
-      onVerticalDragUpdate: (DragUpdateDetails dragUpdateDetails) {
+      onPanDown: (_) => setState(() => _expand = true),
+      onPanStart: (_) => _position = MediaQuery.of(context).size.height * 0.4 * widget.value,
+      onPanUpdate: (DragUpdateDetails dragUpdateDetails) {
         _position -= dragUpdateDetails.delta.dy;
         _position = _position.clamp(0.0, MediaQuery.of(context).size.height * 0.4);
-        widget.onChanged(_position / (MediaQuery.of(context).size.height * 0.4) );
+        widget.onChanged(_position / (MediaQuery.of(context).size.height * 0.4));
       },
-      onVerticalDragEnd: (_) => setState(() => _expand = false),
-      onVerticalDragCancel: () => setState(() => _expand = false),
+      onPanEnd: (_) => setState(() => _expand = false),
+      onPanCancel: () => setState(() => _expand = false),
       child: AnimatedContainer(
         width: 80.0,
         height: MediaQuery.of(context).size.height * 0.4,
