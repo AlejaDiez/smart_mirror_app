@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_mirror_app/controllers/smart_mirror.dart';
+
 import 'views/home.dart';
 
-void main() => runApp(const SmartMirrorApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  final SharedPreferences preferences = await SharedPreferences.getInstance();
+  
+  Get.lazyPut<SmartMirrorController>(() => SmartMirrorController(preferences));
+  runApp(const SmartMirrorApp());
+}
 
 class SmartMirrorApp extends StatelessWidget {
   const SmartMirrorApp();
@@ -11,7 +22,7 @@ class SmartMirrorApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Smart Mirror App',
-      home: const HomeView(),
+      home: HomeView(),
       themeMode: ThemeMode.light,
       theme: ThemeData(
         scaffoldBackgroundColor: const Color(0xFFECECEC),

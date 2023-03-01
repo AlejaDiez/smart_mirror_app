@@ -21,6 +21,10 @@ An app to control the Smart Mirror via bluetooth with [smart_mirror_mcu](https:/
 ### Version 0.1.1 (February 2023)
 - 🖌️ Improve Smart Mirror design
 - 🧰 Smart Mirror model
+### Version 0.1.2 (February 2023)
+- 🕹️ GetX Smart Mirror Controller
+- 💾 Save colors to storage
+- 🕹️ GetX Page Controller
 
 ## License
 

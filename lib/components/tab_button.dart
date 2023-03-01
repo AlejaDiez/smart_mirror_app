@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class TabButtonComponent extends StatefulWidget {
@@ -113,7 +114,7 @@ class _TabButtonComponentState extends State<TabButtonComponent> with TickerProv
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text(widget.data ?? "", style: Theme.of(context).textTheme.bodyLarge),
+                        Text(widget.data ?? "", style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontFeatures: [const FontFeature.tabularFigures()])),
                         Visibility(
                           visible: widget.suffix != null,
                           child: Padding(
